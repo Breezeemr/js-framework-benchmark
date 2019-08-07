@@ -1,0 +1,24 @@
+{:source-paths
+ ["src"]
+
+ :deps
+ {:aliases [:cljs]}
+
+ :nrepl
+ {:port 8777}
+ 
+ :builds
+ {:app {:target     :browser
+        :output-dir "public/js/compiled"
+        :asset-path "/js/compiled"
+
+        :modules
+        {:main
+         {:entries [crinkle-bench.core]}}
+
+        :devtools
+        {:before-load crinkle-bench.core/stop
+         :after-load  crinkle-bench.core/start
+         :http-root   "public"
+         :http-port   8700
+         :preloads    [devtools.preload]}}}}
