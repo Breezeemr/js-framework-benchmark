@@ -21,9 +21,8 @@
        (rand-nth nouns)))
 
 (defn build-data [id count]
-  (repeatedly count (fn []
-                      (->Data (swap! next-id inc)
-                              (build-label)))))
+  (repeatedly count #(->Data (swap! next-id inc)
+                             (build-label))))
 
 (defn run
   [state {:keys [count]}]
