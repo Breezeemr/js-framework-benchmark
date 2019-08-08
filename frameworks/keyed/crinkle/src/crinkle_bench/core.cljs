@@ -6,8 +6,6 @@
    [crinkle.component :refer [CE]]
    [crinkle.dom :as d]))
 
-
-
 (defn row
   [{:keys [data selected? on-click on-delete]}]
   (d/tr {:className (when selected? "danger")}
@@ -21,8 +19,6 @@
                    (d/span {:className "glyphicon.glyphicon-remove"
                             :aria-hidden "true"})))
         (d/td {:className "col-md-6"})))
-
-(enable-console-print!)
 
 (defn view
   []
@@ -59,15 +55,4 @@
    (.. js/document (getElementById "main"))))
 
 (defn ^:export init []
-  ;; init is called ONCE when the page loads
-  ;; this is called in the index.html and must be exported
-  ;; so it is available even in :advanced release builds
-  (prn "starting up!")
   (start))
-
-(defn stop []
-  ;; stop is called before any code is reloaded
-  ;; this is controlled by :before-load in the config
-  (js/console.log "stop"))
-
-
