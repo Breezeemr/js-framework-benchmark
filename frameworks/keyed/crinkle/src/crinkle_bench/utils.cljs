@@ -8,6 +8,10 @@
 
 (def next-id (atom 0))
 
+(def initial-state
+  {:selected nil
+   :data []})
+
 (defn build-label
   []
   (str (rand-nth adjectives)
@@ -47,11 +51,6 @@
 
 (defn delete-row [data id]
   (vec (remove #(identical? id (:id %)) data)))
-
-(def initial-state
-  {:id 0
-   :selected nil
-   :data []})
 
 (defn reducer [state {:keys [action args] :as arg}]
   (let [new-state
