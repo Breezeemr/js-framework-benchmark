@@ -6,6 +6,8 @@
 
 (defrecord Data [id label])
 
+(def next-id (atom 0))
+
 (defn build-label
   []
   (str (rand-nth adjectives)
@@ -14,18 +16,17 @@
        " "
        (rand-nth nouns)))
 
-(defn build-data [{:keys [id] :as state} {:keys [count]}]
-  (let [last-id (+ id count)
-        new-data (for [next-id (range id last-id)]
-                   (->Data next-id (build-label)))]
-    (assoc state
-           :id last-id
-           :data new-data)))
+(defn build-data [id count]
+  (repeatedly count (fn []
+                      (->Data (swap! next-id inc)
+                              (build-label)))))
+
 (defn run
-  [{:keys [id] :as state} {:keys [count] :as args}]
-  (-> state
-      (build-data args)
-      (assoc :selected nil)))
+  [state {:keys [count]}]
+  (let [id (swap! next-id inc)]
+    (assoc state
+           :data (build-data id count)
+           :selected nil)))
 
 (defn add [data id-atom]
   (into data (build-data id-atom 1000)))
@@ -56,7 +57,6 @@
   (let [new-state
         (case action
           :run (run state args))]
-          
     ;;Printing for debugging purposes, this should can be refactored out.
     (println {:arg arg
               :old-state state
