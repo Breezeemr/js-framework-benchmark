@@ -4,11 +4,49 @@
 (def colours ["red", "yellow", "blue", "green", "pink", "brown", "purple", "brown", "white", "black", "orange"])
 (def nouns ["table", "chair", "house", "bbq", "desk", "car", "pony", "cookie", "sandwich", "burger", "pizza", "mouse", "keyboard"])
 
+(def start-time (atom nil))
+(def last-measure (atom nil))
+
 (defrecord Data [id label])
 
-(defn build-data [id-atom count]
-  (repeatedly count (fn []
-                      (->Data (swap! id-atom inc) (str (rand-nth adjectives) " " (rand-nth colours) " " (rand-nth nouns))))))
+(defn clean-up [])
+
+(defn start-measure [name]
+  (reset! start-time (.now js/performance))
+  (reset! last-measure name))
+
+(defn stop-measure []
+  (if-let [last @last-measure]
+    (.setTimeout js/window
+                 (fn []
+                   (reset! last-measure nil)
+                   (let [stop (.now js/performance)]
+                     (.log js/console (str last " took " (- stop @start-time)))))
+                 0)))
+
+(defn print-duration [] (stop-measure))
+
+(defn build-label
+  []
+  (str (rand-nth adjectives)
+       " "
+       (rand-nth colours)
+       " "
+       (rand-nth nouns)))
+
+(defn build-data [{:keys [id] :as state} {:keys [count]}]
+  (let [last-id (+ id count)
+        new-data (for [next-id (range id last-id)]
+                   (->Data next-id (build-label)))]
+    (assoc state
+           :id last-id
+           :data new-data)))
+(defn run
+  [{:keys [id] :as state} {:keys [count] :as args}]
+  (start-measure "run")
+  (-> state
+      (build-data args)
+      (assoc :selected nil)))
 
 (defn add [data id-atom]
   (into data (build-data id-atom 1000)))
@@ -29,3 +67,19 @@
 
 (defn delete-row [data id]
   (vec (remove #(identical? id (:id %)) data)))
+
+(def initial-state
+  {:id 0
+   :selected nil
+   :data []})
+
+(defn reducer [state {:keys [action args] :as arg}]
+  (let [new-state
+        (case action
+          :run (run state args))]
+          
+    ;;Printing for debugging purposes, this should can be refactored out.
+    (println {:arg arg
+              :old-state state
+              :new-state new-state})
+    new-state))

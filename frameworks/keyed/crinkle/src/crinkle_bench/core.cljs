@@ -3,27 +3,14 @@
    ["react-dom" :refer [render]]
    ["react" :as react]
    [crinkle-bench.utils :as u]
+   [crinkle.component :refer [CE]]
    [crinkle.dom :as d]))
 
-(def start-time (atom nil))
-(def last-measure (atom nil))
 
-(defn start-measure [name]
-  (reset! start-time (.now js/performance))
-  (reset! last-measure name))
-
-(defn stop-measure []
-  (if-let [last @last-measure]
-    (.setTimeout js/window
-                 (fn []
-                   (reset! last-measure nil)
-                   (let [stop (.now js/performance)]
-                     (.log js/console (str last " took " (- stop @start-time)))))
-                 0)))
 
 (defn row
-  [data selected? on-click on-delete]
-  (d/tr {:class (when selected? "danger")}
+  [{:keys [data selected? on-click on-delete]}]
+  (d/tr {:className (when selected? "danger")}
         (d/td {:className "col-md-1"})
         (d/td {:className "col-md-4"}
               (d/a {:onClick (fn [e] (on-click (:id data)))}
@@ -37,10 +24,42 @@
 
 (enable-console-print!)
 
+(defn view
+  []
+  (let [[app-db dispatch] (react/useReducer u/reducer u/initial-state)
+        db {:app-db app-db :dispatch dispatch}]
+    (react/useEffect #(do u/print-duration
+                          u/clean-up))
+    (d/div {:className "container"}
+           (d/div {:className "jumbotron"}
+                  (d/div {:className "row"}
+                         (d/div {:className "col-md-6"}
+                                (d/h1 {} "Reagent"))
+                         (d/div {:className "col-md-6"}
+                                (d/div {:className "row"}
+                                       (d/div {:className "col-sm-6.smallpad"}
+                                              (d/button {:className "button.btn.btn-primary.btn-block"
+                                                         :type "button"
+                                                         :id "run"
+                                                         :onClick #(dispatch {:action :run :args {:count 5}})}
+                                                        "Create 1,000 rows")
+                                              ))))
+                  (d/table {:className "table.table-hover.table-striped.test-data"}
+                           (d/tbody {}
+                                    (let [selected (:selected app-db)]
+                                      (for [{:keys [id] :as d} (:data app-db)]
+                                        (CE row {:data d
+                                                 :selected? "TODO"
+                                                 :on-click "TODO"
+                                                 :on-delete "TODO"}
+                                            :key id)
+                                        ))))))))
+  
+
 (defn start []
   (render
-   (d/h1 {} "HELLO WORLD")
-   (.. js/document (getElementById "app"))))
+   (CE view {} )
+   (.. js/document (getElementById "main"))))
 
 (defn ^:export init []
   ;; init is called ONCE when the page loads
@@ -53,3 +72,5 @@
   ;; stop is called before any code is reloaded
   ;; this is controlled by :before-load in the config
   (js/console.log "stop"))
+
+
