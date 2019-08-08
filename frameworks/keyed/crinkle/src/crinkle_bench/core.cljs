@@ -38,23 +38,22 @@
                          (d/div {:className "col-md-6"}
                                 (d/div {:className "row"}
                                        (d/div {:className "col-sm-6.smallpad"}
-                                              (d/button {:className "button.btn.btn-primary.btn-block"
+                                              (d/button {:className "button btn btn-primary btn-block"
                                                          :type "button"
                                                          :id "run"
                                                          :onClick #(dispatch {:action :run :args {:count 5}})}
                                                         "Create 1,000 rows")
-                                              ))))
-                  (d/table {:className "table.table-hover.table-striped.test-data"}
-                           (d/tbody {}
-                                    (let [selected (:selected app-db)]
-                                      (for [{:keys [id] :as d} (:data app-db)]
-                                        (CE row {:data d
-                                                 :selected? "TODO"
-                                                 :on-click "TODO"
-                                                 :on-delete "TODO"}
-                                            :key id)
-                                        ))))))))
-  
+                                              )))))
+           (d/table {:className "table table-hover table-striped test-data"}
+                    (d/tbody {}
+                             (let [selected (:selected app-db)]
+                               (for [{:keys [id] :as d} (:data app-db)]
+                                 (CE row {:data d
+                                          :selected? "TODO"
+                                          :on-click "TODO"
+                                          :on-delete "TODO"}
+                                     :key id)
+                                 )))))))
 
 (defn start []
   (render
