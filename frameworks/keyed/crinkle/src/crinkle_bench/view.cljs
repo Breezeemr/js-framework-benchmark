@@ -15,7 +15,7 @@
         (d/td {:className "col-md-1"}
               (d/a {:onClick (fn [e] (on-delete (:id data)))}
                    (comment "TODO Is this the correct syntax for multiple classes?")
-                   (d/span {:className "glyphicon.glyphicon-remove"
+                   (d/span {:className "glyphicon glyphicon-remove"
                             :aria-hidden "true"})))
         (d/td {:className "col-md-6"})))
 
@@ -30,7 +30,7 @@
                                 (d/h1 {} "Reagent"))
                          (d/div {:className "col-md-6"}
                                 (d/div {:className "row"}
-                                       (d/div {:className "col-sm-6.smallpad"}
+                                       (d/div {:className "col-sm-6 smallpad"}
                                               (d/button {:className "button btn btn-primary btn-block"
                                                          :type "button"
                                                          :id "run"
