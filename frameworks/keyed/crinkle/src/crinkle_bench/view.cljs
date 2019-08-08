@@ -1,6 +1,5 @@
 (ns crinkle-bench.view
   (:require
-   ["react-dom" :refer [render]]
    ["react" :as react]
    [crinkle-bench.utils :as u]
    [crinkle.component :refer [CE]]

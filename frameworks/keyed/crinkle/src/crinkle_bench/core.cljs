@@ -1,11 +1,8 @@
 (ns crinkle-bench.core
   (:require
    ["react-dom" :refer [render]]
-   ["react" :as react]
-   [crinkle-bench.utils :as u]
    [crinkle-bench.view :as view]
-   [crinkle.component :refer [CE]]
-   [crinkle.dom :as d]))
+   [crinkle.component :refer [CE]]))
 
 (defn start []
   (render
