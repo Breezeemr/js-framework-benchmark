@@ -28,8 +28,6 @@
   []
   (let [[app-db dispatch] (react/useReducer u/reducer u/initial-state)
         db {:app-db app-db :dispatch dispatch}]
-    (react/useEffect #(do u/print-duration
-                          u/clean-up))
     (d/div {:className "container"}
            (d/div {:className "jumbotron"}
                   (d/div {:className "row"}

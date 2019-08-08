@@ -4,27 +4,7 @@
 (def colours ["red", "yellow", "blue", "green", "pink", "brown", "purple", "brown", "white", "black", "orange"])
 (def nouns ["table", "chair", "house", "bbq", "desk", "car", "pony", "cookie", "sandwich", "burger", "pizza", "mouse", "keyboard"])
 
-(def start-time (atom nil))
-(def last-measure (atom nil))
-
 (defrecord Data [id label])
-
-(defn clean-up [])
-
-(defn start-measure [name]
-  (reset! start-time (.now js/performance))
-  (reset! last-measure name))
-
-(defn stop-measure []
-  (if-let [last @last-measure]
-    (.setTimeout js/window
-                 (fn []
-                   (reset! last-measure nil)
-                   (let [stop (.now js/performance)]
-                     (.log js/console (str last " took " (- stop @start-time)))))
-                 0)))
-
-(defn print-duration [] (stop-measure))
 
 (defn build-label
   []
@@ -43,7 +23,6 @@
            :data new-data)))
 (defn run
   [{:keys [id] :as state} {:keys [count] :as args}]
-  (start-measure "run")
   (-> state
       (build-data args)
       (assoc :selected nil)))
