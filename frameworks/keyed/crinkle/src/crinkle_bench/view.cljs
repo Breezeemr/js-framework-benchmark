@@ -43,8 +43,8 @@
                                (for [{:keys [id] :as d} (:data app-db)]
                                  (CE row {:data d
                                           :selected? "TODO"
-                                          :on-click "TODO"
-                                          :on-delete "TODO"}
+                                          :onClick "TODO"
+                                          :onDelete "TODO"}
                                      :key id))))))))
                                  
 
