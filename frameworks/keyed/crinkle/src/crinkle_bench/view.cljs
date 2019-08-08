@@ -24,7 +24,7 @@
   (d/div {:className "jumbotron"}
          (d/div {:className "row"}
                 (d/div {:className "col-md-6"}
-                       (d/h1 {} "Reagent"))
+                       (d/h1 {} "Crinkle"))
                 (d/div {:className "col-md-6"}
                        (d/div {:className "row"}
                               (d/div {:className "col-sm-6 smallpad"}
