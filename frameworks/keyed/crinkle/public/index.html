@@ -2,15 +2,14 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="/css/style.css" rel="stylesheet" type="text/css">
-        <link rel="icon" href="https://clojurescript.org/images/cljs-logo-icon-32.png">
+        <title>Crinkle</title> 
+        <link href="/css/currentStyle.css" rel="stylesheet">
     </head>
     <body>
-        <div id="app">
-            Crinkle and shadow cljs Rock!
+        <div id="main">
         </div>
-        <script src="/js/compiled/main.js" type="text/javascript"></script>
-        <script>crnklrn_bench.core.init();</script>
+        <script src="dist/main.js" type="text/javascript"></script>
+        <!-- is this just for development? will it cause an issue as part of the benchmark framework -->
+        <script>crinkle_bench.core.init();</script>
     </body>
 </html>
