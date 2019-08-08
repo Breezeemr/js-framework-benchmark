@@ -19,24 +19,27 @@
                             :aria-hidden "true"})))
         (d/td {:className "col-md-6"})))
 
+(defn jumbotron
+  [{:keys [app-db dispatch]}]
+  (d/div {:className "jumbotron"}
+         (d/div {:className "row"}
+                (d/div {:className "col-md-6"}
+                       (d/h1 {} "Reagent"))
+                (d/div {:className "col-md-6"}
+                       (d/div {:className "row"}
+                              (d/div {:className "col-sm-6 smallpad"}
+                                     (d/button {:className "button btn btn-primary btn-block"
+                                                :type "button"
+                                                :id "run"
+                                                :onClick #(dispatch {:action :run :args {:count 5}})}
+                                               "Create 1,000 rows")))))))
+
 (defn app
   []
   (let [[app-db dispatch] (react/useReducer u/reducer u/initial-state)
         db {:app-db app-db :dispatch dispatch}]
     (d/div {:className "container"}
-           (d/div {:className "jumbotron"}
-                  (d/div {:className "row"}
-                         (d/div {:className "col-md-6"}
-                                (d/h1 {} "Reagent"))
-                         (d/div {:className "col-md-6"}
-                                (d/div {:className "row"}
-                                       (d/div {:className "col-sm-6 smallpad"}
-                                              (d/button {:className "button btn btn-primary btn-block"
-                                                         :type "button"
-                                                         :id "run"
-                                                         :onClick #(dispatch {:action :run :args {:count 5}})}
-                                                        "Create 1,000 rows"))))))
-                                              
+           (CE jumbotron db)
            (d/table {:className "table table-hover table-striped test-data"}
                     (d/tbody {}
                              (let [selected (:selected app-db)]
