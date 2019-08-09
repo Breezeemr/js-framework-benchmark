@@ -61,13 +61,20 @@
          :data (build-data 100)
          :selected nil))
 
+(defn clear
+  [state]
+  (assoc state
+         :data []
+         :selected nil))
+
 (defn reducer [state {:keys [action args] :as arg}]
   (let [new-state
         (case action
           :run (run state)
           :run-lots (run-lots state)
           :add (add state)
-          :update (update-some state))]
+          :update (update-some state)
+          :clear (clear state))]
     ;;Printing for debugging purposes, this should can be refactored out.
     (println {:arg arg
               :old-state state
