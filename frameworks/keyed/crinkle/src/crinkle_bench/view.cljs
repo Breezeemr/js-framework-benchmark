@@ -43,6 +43,6 @@
            (d/table {:className "table table-hover table-striped test-data"}
                     (d/tbody {}
                              (map #(CE row {:data % :selected? "TODO" :onClick "TODO" :onDelete "TODO"} :key (:id %))
-                              (:data app-db)))))))
-
-
+                                  (:data app-db))))
+           (d/span {:className "preloadicon glyphicon glyphicon-remove"
+                    :aria-hidden "true"}))))
