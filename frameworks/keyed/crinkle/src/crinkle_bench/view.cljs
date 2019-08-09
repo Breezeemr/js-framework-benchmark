@@ -50,7 +50,10 @@
                                                  :on-click #(dispatch {:action :update})})
                                      (CE button {:id "clear"
                                                  :title "Clear"
-                                                 :on-click #(dispatch {:action :clear})})))))))
+                                                 :on-click #(dispatch {:action :clear})})
+                                     (CE button {:id "swaprows"
+                                                 :title "Swap Rows"
+                                                 :on-click #(dispatch {:action :swap-rows})})))))))
 
                                      
 

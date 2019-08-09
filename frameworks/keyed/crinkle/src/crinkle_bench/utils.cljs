@@ -45,13 +45,19 @@
                  ;; mocked number
                  (range 0 (count data) 3))))
 
-(defn swap-rows [data]
-  (if (> (count data) 998)
-    (-> data
-        (assoc 1 (get data 998))
-        (assoc 998 (get data 1)))
-    data))
+(defn swap-rows
+  [{:keys [data] :as state}]
+  ;;temp hack
+  (let [d (vec data)]
+    (assoc state :data (if (> (count d) 1)
+                         (-> d
+                             ;;mocked values
+                             (assoc 1 (get d 2))
+                             (assoc 2 (get d 1)))
+                         data))))
 
+
+;;TODO is this being used?
 (defn delete-row [data id]
   (vec (remove #(identical? id (:id %)) data)))
 
@@ -74,7 +80,8 @@
           :run-lots (run-lots state)
           :add (add state)
           :update (update-some state)
-          :clear (clear state))]
+          :clear (clear state)
+          :swap-rows (swap-rows state))]
     ;;Printing for debugging purposes, this should can be refactored out.
     (println {:arg arg
               :old-state state
