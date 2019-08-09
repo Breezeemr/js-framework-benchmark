@@ -22,13 +22,17 @@
 
 (defn build-data
   [count]
-  (repeatedly count #(->Data (swap! next-id inc)
-                             (build-label))))
+  (loop [i count
+         data (transient [])]
+    (if (pos? i)
+      (recur (dec i) (conj! data (->Data (swap! next-id inc)
+                                         (build-label))))
+      (persistent! data))))
 
 (defn run
   [state]
   (assoc state
-         :data (vec (build-data 1000))
+         :data (build-data 1000)
          :selected nil))
 
 (defn add
@@ -55,14 +59,13 @@
 (defn delete-row
   [{:keys [data] :as state} {:keys [id]}]
   (assoc state
-         ;;Why use identical?
-         :data (vec (remove #(identical? id (:id %)) data))
+         :data (into [] (remove #(identical? id (:id %)) data))
          :selected nil))
 
 (defn run-lots
   [state]
   (assoc state
-         :data (vec (build-data 10000))
+         :data (build-data 10000)
          :selected nil))
 
 (defn select
