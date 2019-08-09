@@ -43,14 +43,6 @@
            (d/table {:className "table table-hover table-striped test-data"}
                     (d/tbody {}
                              (map #(CE row {:data % :selected? "TODO" :onClick "TODO" :onDelete "TODO"} :key (:id %))
-                              (:data app-db))
-                             #_(let [selected (:selected app-db)]
-                                 (for [{:keys [id] :as d} (:data app-db)]
-                                   (CE row {:data d
-                                            :selected? "TODO"
-                                            :onClick "TODO"
-                                            :onDelete "TODO"}
-                                       :key id))))))))
-
+                              (:data app-db)))))))
 
 
