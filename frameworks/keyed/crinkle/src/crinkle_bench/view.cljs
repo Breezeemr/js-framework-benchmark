@@ -19,6 +19,14 @@
                             :aria-hidden "true"})))
         (d/td {:className "col-md-6"})))
 
+(defn button
+  [{:keys [id on-click title]}]
+  (d/button {:className "btn btn-primary btn-block"
+             :type "button"
+             :id id
+             :onClick on-click}
+            title))
+
 (defn jumbotron
   [{:keys [app-db dispatch]}]
   (d/div {:className "jumbotron"}
@@ -28,11 +36,9 @@
                 (d/div {:className "col-md-6"}
                        (d/div {:className "row"}
                               (d/div {:className "col-sm-6 smallpad"}
-                                     (d/button {:className "button btn btn-primary btn-block"
-                                                :type "button"
-                                                :id "run"
-                                                :onClick #(dispatch {:action :run :args {:count 5}})}
-                                               "Create 1,000 rows")))))))
+                                     (CE button {:id "run"
+                                                 :on-click #(dispatch {:action :run :args {:count 5}})
+                                                 :title "Create 1,000 rows"})))))))
 
 (defn app
   []
