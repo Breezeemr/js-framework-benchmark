@@ -36,9 +36,31 @@ npm run clean
 ```
 
 
-## Benchmarking 
+## Benchmarking just this project
 
-See instructions in benchmarking repo for how to benchmark.
+See instructions in benchmarking repo for how to [benchmark a single project.](https://github.com/krausest/js-framework-benchmark#4-running-a-single-framework-with-the-automated-benchmark-driver)
+
+but it will probably look like
+
+1. install webdriver
+
+```shell
+cd webdriver-ts
+npm install
+npm run build-prod
+```
+
+2. run benchmark against crinkle
+
+warning this will take about 5 minutes and open a browser repeatedly.
+
+```
+npm run bench keyed/crinkle
+```
+
+3. check results in webdriver-ts/results directory (see link above for more)
+
+
 
 ## License
 
