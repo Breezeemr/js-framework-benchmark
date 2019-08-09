@@ -28,7 +28,7 @@
 (defn run
   [state]
   (assoc state
-         :data (build-data 10)
+         :data (vec (build-data 10))
          :selected nil))
 
 (defn add
@@ -41,22 +41,18 @@
          (reduce (fn [data index]
                    (let [row (get data index)]
                      (assoc  data index (assoc row :label (str (:label row) " !!!")))))
-                 ;; TODO: consider why we have to run vec here.
-                 ;; The immediate need is because you can't assoc into lazy lists
-                 (vec data)  
+                 data  
                  ;; mocked number
                  (range 0 (count data) 3))))
 
 (defn swap-rows
   [{:keys [data] :as state}]
-  ;;temp hack
-  (let [d (vec data)]
-    (assoc state :data (if (> (count d) 1)
-                         (-> d
-                             ;;mocked values
-                             (assoc 1 (get d 2))
-                             (assoc 2 (get d 1)))
-                         data))))
+  (assoc state :data (if (> (count data) 1)
+                       (-> data
+                           ;;mocked values
+                           (assoc 1 (get data 2))
+                           (assoc 2 (get data 1)))
+                       data)))
 
 (defn delete-row
   [{:keys [data] :as state} {:keys [id]}]
@@ -68,7 +64,7 @@
 (defn run-lots
   [state]
   (assoc state
-         :data (build-data 100)
+         :data (vec (build-data 100))
          :selected nil))
 
 (defn select
