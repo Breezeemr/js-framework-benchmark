@@ -33,7 +33,8 @@
 (defn add [state]
   (update state :data into (build-data 1)))
 
-(defn update-some [{:keys [data] :as state}]
+(defn update-some
+  [{:keys [data] :as state}]
   (assoc state :data
          (reduce (fn [data index]
                    (let [row (get data index)]
