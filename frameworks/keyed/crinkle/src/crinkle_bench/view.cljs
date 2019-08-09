@@ -41,7 +41,10 @@
                                                  :title "Create 1,000 rows"})
                                      (CE button {:id "runlots"
                                                  :on-click #(dispatch {:action :run-lots})
-                                                 :title "Create 10,000 rows"})))))))
+                                                 :title "Create 10,000 rows"})
+                                     (CE button {:id "add"
+                                                 :title "Append 1,000 rows"
+                                                 :on-click #(dispatch {:action :add})})))))))
                                      
 
 (defn app

@@ -30,8 +30,8 @@
          :data (build-data 10)
          :selected nil))
 
-(defn add [data id-atom]
-  (into data (build-data 1000)))
+(defn add [state]
+  (update state :data into (build-data 1)))
 
 (defn update-some [data]
   (reduce (fn [data index]
@@ -50,7 +50,6 @@
 (defn delete-row [data id]
   (vec (remove #(identical? id (:id %)) data)))
 
-
 (defn run-lots
   [state]
   (assoc state
@@ -61,7 +60,8 @@
   (let [new-state
         (case action
           :run (run state)
-          :run-lots (run-lots state))]
+          :run-lots (run-lots state)
+          :add (add state))]
     ;;Printing for debugging purposes, this should can be refactored out.
     (println {:arg arg
               :old-state state
