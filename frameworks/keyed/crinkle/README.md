@@ -9,15 +9,15 @@ That will meet the specification outlined by and for this [benchmark](https://gi
 ## install
 
 ``` shell
-`yarn install` or `npm install`
+`npm install`
 
-`yarn watch` or `npm run build-dev`
-```
+`npm run build-dev`
 
-## development
+
+# development
 ``` shell
 
-`yarn watch` or `npm run build-dev`
+`npm run build-dev`
 ```
 
 now follow the instructions in the terminal.
@@ -26,13 +26,13 @@ now follow the instructions in the terminal.
 ## Clean
 
 ``` shell
-yarn clean
+npm run clean
 ```
 
 ## Release
 
 ``` shell
-`yarn release` or `npm build-prod`
+`npm build-prod`
 ```
 
 

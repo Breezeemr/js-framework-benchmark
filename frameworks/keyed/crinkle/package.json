@@ -5,7 +5,7 @@
   "scripts": {
     "build-prod": "shadow-cljs release prod;",
     "build-dev":  "shadow-cljs watch dev;",
-    "deps": "yarn install",
+    "deps": "npm run install",
     "watch": "shadow-cljs watch dev;",
     "release": "shadow-cljs release prod;",
     "server": "shadow-cljs server;",
