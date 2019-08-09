@@ -58,9 +58,12 @@
                              (assoc 2 (get d 1)))
                          data))))
 
-;;TODO is this being used?
-(defn delete-row [data id]
-  (vec (remove #(identical? id (:id %)) data)))
+(defn delete-row
+  [{:keys [data] :as state} {:keys [id]}]
+  (assoc state
+         ;;Why use identical?
+         :data (vec (remove #(identical? id (:id %)) data))
+         :selected nil))
 
 (defn run-lots
   [state]
@@ -87,7 +90,8 @@
           :update (update-some state)
           :clear (clear state)
           :swap-rows (swap-rows state)
-          :select (select state args))]
+          :select (select state args)
+          :remove (delete-row state args))]
     ;;Printing for debugging purposes, this should can be refactored out.
     (println {:arg arg
               :old-state state
