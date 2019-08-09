@@ -44,7 +44,11 @@
                                                  :title "Create 10,000 rows"})
                                      (CE button {:id "add"
                                                  :title "Append 1,000 rows"
-                                                 :on-click #(dispatch {:action :add})})))))))
+                                                 :on-click #(dispatch {:action :add})})
+                                     (CE button {:id "update"
+                                                 :title "Update every 10th row"
+                                                 :on-click #(dispatch {:action :update})})))))))
+
                                      
 
 (defn app

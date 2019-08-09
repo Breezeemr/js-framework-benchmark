@@ -33,12 +33,16 @@
 (defn add [state]
   (update state :data into (build-data 1)))
 
-(defn update-some [data]
-  (reduce (fn [data index]
-            (let [row (get data index)]
-              (assoc data index (assoc row :label (str (:label row) " !!!")))))
-          data
-          (range 0 (count data) 10)))
+(defn update-some [{:keys [data] :as state}]
+  (assoc state :data
+         (reduce (fn [data index]
+                   (let [row (get data index)]
+                     (assoc  data index (assoc row :label (str (:label row) " !!!")))))
+                 ;; TODO: consider why we have to run vec here.
+                 ;; The immediate need is because you can't assoc into lazy lists
+                 (vec data)  
+                 ;; mocked number
+                 (range 0 (count data) 3))))
 
 (defn swap-rows [data]
   (if (> (count data) 998)
@@ -61,7 +65,8 @@
         (case action
           :run (run state)
           :run-lots (run-lots state)
-          :add (add state))]
+          :add (add state)
+          :update (update-some state))]
     ;;Printing for debugging purposes, this should can be refactored out.
     (println {:arg arg
               :old-state state
