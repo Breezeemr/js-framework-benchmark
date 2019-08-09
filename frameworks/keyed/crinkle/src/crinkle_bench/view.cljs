@@ -46,7 +46,7 @@
                                           :on-click #(dispatch {:action :add})})
                               (CE button {:id "update"
                                           :title "Update every 10th row"
-                                          :on-click #(dispatch :action :update)})
+                                          :on-click #(dispatch {:action :update})})
                               (CE button {:id "clear"
                                           :title "Clear"
                                           :on-click #(dispatch {:action :clear})})
