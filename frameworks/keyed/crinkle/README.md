@@ -6,16 +6,22 @@ This is a app built using [Crinkle](https://github.com/favila/crinkle).
 That will meet the specification outlined by and for this [benchmark](https://github.com/krausest/js-framework-benchmark).
 
 
-
-## Run
+## install
 
 ``` shell
-yarn install
+`yarn install` or `npm install`
 
-yarn watch
+`yarn watch` or `npm run build-dev`
 ```
 
-now open the app in your browser!
+## development
+``` shell
+
+`yarn watch` or `npm run build-dev`
+```
+
+now follow the instructions in the terminal.
+
 
 ## Clean
 
@@ -26,8 +32,13 @@ yarn clean
 ## Release
 
 ``` shell
-yarn release
+`yarn release` or `npm build-prod`
 ```
+
+
+## Benchmarking 
+
+See instructions in benchmarking repo for how to benchmark.
 
 ## License
 

@@ -4,6 +4,7 @@
   },
   "scripts": {
     "build-prod": "shadow-cljs release app;",
+    "build-dev":  "shadow-cljs watch app;",
     "deps": "yarn install",
     "watch": "shadow-cljs watch app;",
     "release": "shadow-cljs release app;",
