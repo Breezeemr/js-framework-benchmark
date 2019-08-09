@@ -20,7 +20,8 @@
        " "
        (rand-nth nouns)))
 
-(defn build-data [count]
+(defn build-data
+  [count]
   (repeatedly count #(->Data (swap! next-id inc)
                              (build-label))))
 
@@ -30,7 +31,8 @@
          :data (build-data 10)
          :selected nil))
 
-(defn add [state]
+(defn add
+  [state]
   (update state :data into (build-data 1)))
 
 (defn update-some
@@ -56,7 +58,6 @@
                              (assoc 2 (get d 1)))
                          data))))
 
-
 ;;TODO is this being used?
 (defn delete-row [data id]
   (vec (remove #(identical? id (:id %)) data)))
@@ -66,6 +67,10 @@
   (assoc state
          :data (build-data 100)
          :selected nil))
+
+(defn select
+  [state {:keys [id]}]
+  (assoc state :selected id))
 
 (defn clear
   [state]
@@ -81,7 +86,8 @@
           :add (add state)
           :update (update-some state)
           :clear (clear state)
-          :swap-rows (swap-rows state))]
+          :swap-rows (swap-rows state)
+          :select (select state args) )]
     ;;Printing for debugging purposes, this should can be refactored out.
     (println {:arg arg
               :old-state state

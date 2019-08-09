@@ -6,19 +6,20 @@
    [crinkle.dom :as d]))
 
 (defn row
-  [{:keys [data selected? on-click on-delete]}]
-  (d/tr {:className (when selected? "danger")}
+  [{:keys [data app-db dispatch]}]
+  (d/tr {:className (when (= (:selected data) (:selected data)) "danger")}
         (d/td {:className "col-md-1"})
         (d/td {:className "col-md-4"}
-              (d/a {:onClick (fn [e] (on-click (:id data)))}
+              (d/a {:onClick #(dispatch {:action :select :args {:id (:id data)}})}
                    (:label data)))
         (d/td {:className "col-md-1"}
-              (d/a {:onClick (fn [e] (on-delete (:id data)))}
+              (d/a {:onClick (fn [_] #_(on-delete (:id data)))}
                    (comment "TODO Is this the correct syntax for multiple classes?")
                    (d/span {:className "glyphicon glyphicon-remove"
                             :aria-hidden "true"})))
         (d/td {:className "col-md-6"})))
 
+;;TODO needs div
 (defn button
   [{:keys [id on-click title]}]
   (d/button {:className "btn btn-primary btn-block"
@@ -55,8 +56,6 @@
                                                  :title "Swap Rows"
                                                  :on-click #(dispatch {:action :swap-rows})})))))))
 
-                                     
-
 (defn app
   []
   (let [[app-db dispatch] (react/useReducer u/reducer u/initial-state)
@@ -65,7 +64,9 @@
            (CE jumbotron db)
            (d/table {:className "table table-hover table-striped test-data"}
                     (d/tbody {}
-                             (map #(CE row {:data % :selected? "TODO" :onClick "TODO" :onDelete "TODO"} :key (:id %))
+                             (map #(CE row
+                                       (assoc db :data %)
+                                       :key (:id %))
                                   (:data app-db))))
            (d/span {:className "preloadicon glyphicon glyphicon-remove"
                     :aria-hidden "true"}))))
