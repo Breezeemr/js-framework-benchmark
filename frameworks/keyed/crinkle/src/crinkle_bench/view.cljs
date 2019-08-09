@@ -7,16 +7,22 @@
 
 (defn row
   [{:keys [dispatch selected? id label]}]
-  (d/tr {:className (when selected? "danger")}
-        (d/td {:className "col-md-1"} id)
-        (d/td {:className "col-md-4"}
-              (d/a {:onClick #(dispatch {:action :select :args {:id id}})}
-                   label))
-        (d/td {:className "col-md-1"}
-              (d/a {:onClick #(dispatch {:action :remove :args {:id id}})}
-                   (d/span {:className "glyphicon glyphicon-remove"
-                            :aria-hidden "true"})))
-        (d/td {:className "col-md-6"})))
+  (let [select-cb (react/useCallback #(dispatch {:action :select :args {:id id}})
+                                     #js[])
+        remove-cb (react/useCallback #(dispatch {:action :remove :args {:id id}})
+                                     #js[])]
+    (d/tr {:className (when selected? "danger")}
+          (d/td {:className "col-md-1"} id)
+          (d/td {:className "col-md-4"}
+                (d/a {:onClick select-cb}
+                     label))
+          (d/td {:className "col-md-1"}
+                (d/a {:onClick remove-cb}
+                     (d/span {:className "glyphicon glyphicon-remove"
+                              :aria-hidden "true"})))
+          (d/td {:className "col-md-6"}))))
+
+(def memoed-row (react/memo row =))
 
 (defn button
   [{:keys [id on-click title]}]
@@ -54,15 +60,16 @@
                                           :title "Swap Rows"
                                           :on-click #(dispatch {:action :swap-rows})}))))))
 
+(def memoed-jumbotron (react/memo jumbotron =))
+
 (defn app
   []
-  (let [[app-db dispatch] (react/useReducer u/reducer u/initial-state)
-        db {:app-db app-db :dispatch dispatch}]
+  (let [[app-db dispatch] (react/useReducer u/reducer u/initial-state)]
     (d/div {:className "container"}
-           (CE jumbotron {:dispatch dispatch})
+           (CE memoed-jumbotron {:dispatch dispatch})
            (d/table {:className "table table-hover table-striped test-data"}
                     (d/tbody {}
-                             (map #(CE row
+                             (map #(CE memoed-row
                                        (cond-> (assoc % :dispatch dispatch)
                                          (= (:id %) (:selected app-db)) (assoc :selected? true))
                                        :key (:id %))
