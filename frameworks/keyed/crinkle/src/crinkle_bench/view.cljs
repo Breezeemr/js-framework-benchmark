@@ -21,11 +21,12 @@
 ;;TODO needs div
 (defn button
   [{:keys [id on-click title]}]
-  (d/button {:className "btn btn-primary btn-block"
-             :type "button"
-             :id id
-             :onClick on-click}
-            title))
+  (d/div {:className "col-sm-6 smallpad"}
+         (d/button {:className "btn btn-primary btn-block"
+                    :type "button"
+                    :id id
+                    :onClick on-click}
+                   title)))
 
 (defn jumbotron
   [{:keys [app-db dispatch]}]
@@ -35,25 +36,24 @@
                        (d/h1 {} "Crinkle"))
                 (d/div {:className "col-md-6"}
                        (d/div {:className "row"}
-                              (d/div {:className "col-sm-6 smallpad"}
-                                     (CE button {:id "run"
-                                                 :on-click #(dispatch {:action :run})
-                                                 :title "Create 1,000 rows"})
-                                     (CE button {:id "runlots"
-                                                 :on-click #(dispatch {:action :run-lots})
-                                                 :title "Create 10,000 rows"})
-                                     (CE button {:id "add"
-                                                 :title "Append 1,000 rows"
-                                                 :on-click #(dispatch {:action :add})})
-                                     (CE button {:id "update"
-                                                 :title "Update every 10th row"
-                                                 :on-click #(dispatch {:action :update})})
-                                     (CE button {:id "clear"
-                                                 :title "Clear"
-                                                 :on-click #(dispatch {:action :clear})})
-                                     (CE button {:id "swaprows"
-                                                 :title "Swap Rows"
-                                                 :on-click #(dispatch {:action :swap-rows})})))))))
+                              (CE button {:id "run"
+                                          :on-click #(dispatch {:action :run})
+                                          :title "Create 1,000 rows"})
+                              (CE button {:id "runlots"
+                                          :on-click #(dispatch {:action :run-lots})
+                                          :title "Create 10,000 rows"})
+                              (CE button {:id "add"
+                                          :title "Append 1,000 rows"
+                                          :on-click #(dispatch {:action :add})})
+                              (CE button {:id "update"
+                                          :title "Update every 10th row"
+                                          :on-click #(dispatch :action :update)})
+                              (CE button {:id "clear"
+                                          :title "Clear"
+                                          :on-click #(dispatch {:action :clear})})
+                              (CE button {:id "swaprows"
+                                          :title "Swap Rows"
+                                          :on-click #(dispatch {:action :swap-rows})}))))))
 
 (defn app
   []
