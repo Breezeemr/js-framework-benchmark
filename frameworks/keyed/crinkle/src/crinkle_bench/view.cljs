@@ -6,14 +6,14 @@
    [crinkle.dom :as d]))
 
 (defn row
-  [{:keys [data selected? app-db dispatch]}]
+  [{:keys [dispatch selected? id label]}]
   (d/tr {:className (when selected? "danger")}
-        (d/td {:className "col-md-1"} (:id data))
+        (d/td {:className "col-md-1"} id)
         (d/td {:className "col-md-4"}
-              (d/a {:onClick #(dispatch {:action :select :args {:id (:id data)}})}
-                   (:label data)))
+              (d/a {:onClick #(dispatch {:action :select :args {:id id}})}
+                   label))
         (d/td {:className "col-md-1"}
-              (d/a {:onClick #(dispatch {:action :remove :args {:id (:id data)}})}
+              (d/a {:onClick #(dispatch {:action :remove :args {:id id}})}
                    (d/span {:className "glyphicon glyphicon-remove"
                             :aria-hidden "true"})))
         (d/td {:className "col-md-6"})))
@@ -28,7 +28,7 @@
                    title)))
 
 (defn jumbotron
-  [{:keys [app-db dispatch]}]
+  [{:keys [dispatch]}]
   (d/div {:className "jumbotron"}
          (d/div {:className "row"}
                 (d/div {:className "col-md-6"}
@@ -59,13 +59,12 @@
   (let [[app-db dispatch] (react/useReducer u/reducer u/initial-state)
         db {:app-db app-db :dispatch dispatch}]
     (d/div {:className "container"}
-           (CE jumbotron db)
+           (CE jumbotron {:dispatch dispatch})
            (d/table {:className "table table-hover table-striped test-data"}
                     (d/tbody {}
                              (map #(CE row
-                                       (assoc db
-                                              :data %
-                                              :selected? (= (:id %) (:selected app-db)))
+                                       (cond-> (assoc % :dispatch dispatch)
+                                         (= (:id %) (:selected app-db)) (assoc :selected? true))
                                        :key (:id %))
                                   (:data app-db))))
            (d/span {:className "preloadicon glyphicon glyphicon-remove"
