@@ -18,7 +18,6 @@
                             :aria-hidden "true"})))
         (d/td {:className "col-md-6"})))
 
-;;TODO needs div
 (defn button
   [{:keys [id on-click title]}]
   (d/div {:className "col-sm-6 smallpad"}
