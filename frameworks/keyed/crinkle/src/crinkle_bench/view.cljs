@@ -14,7 +14,6 @@
                    (:label data)))
         (d/td {:className "col-md-1"}
               (d/a {:onClick #(dispatch {:action :remove :args {:id (:id data)}})}
-                   (comment "TODO Is this the correct syntax for multiple classes?")
                    (d/span {:className "glyphicon glyphicon-remove"
                             :aria-hidden "true"})))
         (d/td {:className "col-md-6"})))
