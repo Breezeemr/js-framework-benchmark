@@ -20,19 +20,18 @@
        " "
        (rand-nth nouns)))
 
-(defn build-data [id count]
+(defn build-data [count]
   (repeatedly count #(->Data (swap! next-id inc)
                              (build-label))))
 
 (defn run
-  [state {:keys [count]}]
-  (let [id (swap! next-id inc)]
-    (assoc state
-           :data (build-data id count)
-           :selected nil)))
+  [state]
+  (assoc state
+         :data (build-data 10)
+         :selected nil))
 
 (defn add [data id-atom]
-  (into data (build-data id-atom 1000)))
+  (into data (build-data 1000)))
 
 (defn update-some [data]
   (reduce (fn [data index]
@@ -51,10 +50,18 @@
 (defn delete-row [data id]
   (vec (remove #(identical? id (:id %)) data)))
 
+
+(defn run-lots
+  [state]
+  (assoc state
+         :data (build-data 100)
+         :selected nil))
+
 (defn reducer [state {:keys [action args] :as arg}]
   (let [new-state
         (case action
-          :run (run state args))]
+          :run (run state)
+          :run-lots (run-lots state))]
     ;;Printing for debugging purposes, this should can be refactored out.
     (println {:arg arg
               :old-state state

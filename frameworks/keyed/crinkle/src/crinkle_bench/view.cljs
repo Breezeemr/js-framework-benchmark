@@ -37,8 +37,12 @@
                        (d/div {:className "row"}
                               (d/div {:className "col-sm-6 smallpad"}
                                      (CE button {:id "run"
-                                                 :on-click #(dispatch {:action :run :args {:count 5}})
-                                                 :title "Create 1,000 rows"})))))))
+                                                 :on-click #(dispatch {:action :run})
+                                                 :title "Create 1,000 rows"})
+                                     (CE button {:id "runlots"
+                                                 :on-click #(dispatch {:action :run-lots})
+                                                 :title "Create 10,000 rows"})))))))
+                                     
 
 (defn app
   []
