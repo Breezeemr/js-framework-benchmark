@@ -8,7 +8,7 @@
 (defn row
   [{:keys [data selected? app-db dispatch]}]
   (d/tr {:className (when selected? "danger")}
-        (d/td {:className "col-md-1"})
+        (d/td {:className "col-md-1"} (:id data))
         (d/td {:className "col-md-4"}
               (d/a {:onClick #(dispatch {:action :select :args {:id (:id data)}})}
                    (:label data)))
