@@ -28,12 +28,12 @@
 (defn run
   [state]
   (assoc state
-         :data (vec (build-data 10))
+         :data (vec (build-data 1000))
          :selected nil))
 
 (defn add
   [state]
-  (update state :data into (build-data 1)))
+  (update state :data into (build-data 1000)))
 
 (defn update-some
   [{:keys [data] :as state}]
@@ -42,16 +42,14 @@
                    (let [row (get data index)]
                      (assoc  data index (assoc row :label (str (:label row) " !!!")))))
                  data  
-                 ;; mocked number
-                 (range 0 (count data) 3))))
+                 (range 0 (count data) 10))))
 
 (defn swap-rows
   [{:keys [data] :as state}]
-  (assoc state :data (if (> (count data) 1)
+  (assoc state :data (if (> (count data) 998)
                        (-> data
-                           ;;mocked values
-                           (assoc 1 (get data 2))
-                           (assoc 2 (get data 1)))
+                           (assoc 1 (get data 998))
+                           (assoc 998 (get data 1)))
                        data)))
 
 (defn delete-row
@@ -64,7 +62,7 @@
 (defn run-lots
   [state]
   (assoc state
-         :data (vec (build-data 100))
+         :data (vec (build-data 10000))
          :selected nil))
 
 (defn select
