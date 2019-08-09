@@ -8,16 +8,27 @@
  {:port 8777}
  
  :builds
- {:app {:target     :browser
-        :output-dir "dist"
-        :asset-path "."
 
-        :modules
-        {:main
-         {:entries [crinkle-bench.core]}}
+  {:prod {:target     :browser
+          :output-dir "dist"
+          :asset-path "."
 
-        :devtools
-        {:after-load  crinkle-bench.core/start
-         :http-root   "."
-         :http-port   8700
-         :preloads    [devtools.preload]}}}}
+          :modules
+          {:main
+           {:entries [crinkle-bench.core]}}}
+
+          
+          
+   :dev {:target :browser
+         :output-dir "public/js/compiled"
+         :asset-path "/js/compiled"
+
+         :devtools
+         {:after-load  crinkle-bench.core/start
+          :http-root   "public"
+          :http-port   8700
+          :preloads    [devtools.preload]}
+
+         :modules
+         {:main
+          {:entries [crinkle-bench.core]}}}}}

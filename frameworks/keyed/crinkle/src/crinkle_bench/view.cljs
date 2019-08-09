@@ -2,7 +2,7 @@
   (:require
    ["react" :as react]
    [crinkle-bench.utils :as u]
-   [crinkle.component :refer [CE]]
+   [crinkle.component :refer [CE] :as c]
    [crinkle.dom :as d]))
 
 (defn row
@@ -42,13 +42,15 @@
            (CE jumbotron db)
            (d/table {:className "table table-hover table-striped test-data"}
                     (d/tbody {}
-                             (let [selected (:selected app-db)]
-                               (for [{:keys [id] :as d} (:data app-db)]
-                                 (CE row {:data d
-                                          :selected? "TODO"
-                                          :onClick "TODO"
-                                          :onDelete "TODO"}
-                                     :key id))))))))
-                                 
+                             (map #(CE row {:data % :selected? "TODO" :onClick "TODO" :onDelete "TODO"} :key (:id %))
+                              (:data app-db))
+                             #_(let [selected (:selected app-db)]
+                                 (for [{:keys [id] :as d} (:data app-db)]
+                                   (CE row {:data d
+                                            :selected? "TODO"
+                                            :onClick "TODO"
+                                            :onDelete "TODO"}
+                                       :key id))))))))
+
 
 
