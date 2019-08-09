@@ -6,8 +6,8 @@
    [crinkle.dom :as d]))
 
 (defn row
-  [{:keys [data app-db dispatch]}]
-  (d/tr {:className (when (= (:selected data) (:selected data)) "danger")}
+  [{:keys [data selected? app-db dispatch]}]
+  (d/tr {:className (when selected? "danger")}
         (d/td {:className "col-md-1"})
         (d/td {:className "col-md-4"}
               (d/a {:onClick #(dispatch {:action :select :args {:id (:id data)}})}
@@ -65,7 +65,9 @@
            (d/table {:className "table table-hover table-striped test-data"}
                     (d/tbody {}
                              (map #(CE row
-                                       (assoc db :data %)
+                                       (assoc db
+                                              :data %
+                                              :selected? (= (:id %) (:selected app-db)))
                                        :key (:id %))
                                   (:data app-db))))
            (d/span {:className "preloadicon glyphicon glyphicon-remove"

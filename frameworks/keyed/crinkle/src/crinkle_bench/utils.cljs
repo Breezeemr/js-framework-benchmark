@@ -87,7 +87,7 @@
           :update (update-some state)
           :clear (clear state)
           :swap-rows (swap-rows state)
-          :select (select state args) )]
+          :select (select state args))]
     ;;Printing for debugging purposes, this should can be refactored out.
     (println {:arg arg
               :old-state state
