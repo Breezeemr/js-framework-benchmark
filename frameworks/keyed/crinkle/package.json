@@ -1,10 +1,14 @@
 {
+  "js-framework-benchmark": {
+    "frameworkVersion": "2.0.0"
+  },
   "scripts": {
+    "build-prod": "shadow-cljs release app;",
     "deps": "yarn install",
     "watch": "shadow-cljs watch app;",
     "release": "shadow-cljs release app;",
     "server": "shadow-cljs server;",
-    "clean": "rm -rf target; rm -rf public/js/compiled"
+    "clean": "rm -rf target; rm -rf dist"
   },
   "dependencies": {
     "create-react-class": "^15.6.2",
