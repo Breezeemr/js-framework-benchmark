@@ -9,15 +9,14 @@ That will meet the specification outlined by and for this [benchmark](https://gi
 ## install
 
 ``` shell
-`npm install`
+npm install
+npm run build-dev
+```
 
-`npm run build-dev`
+## development
 
-
-# development
 ``` shell
-
-`npm run build-dev`
+npm run build-dev
 ```
 
 now follow the instructions in the terminal.
@@ -32,7 +31,7 @@ npm run clean
 ## Release
 
 ``` shell
-`npm build-prod`
+npm build-prod
 ```
 
 
