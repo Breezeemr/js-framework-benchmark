@@ -6,7 +6,7 @@
    [crinkle.dom :as d]))
 
 (defn row
-  [{:keys [dispatch selected? id label]}]
+  [{:keys [dispatch selected?] {:keys [id label]} :item}]
   (let [select-cb (react/useCallback #(dispatch {:action :select :args {:id id}})
                                      #js[])
         remove-cb (react/useCallback #(dispatch {:action :remove :args {:id id}})
@@ -69,10 +69,11 @@
            (CE memoed-jumbotron {:dispatch dispatch})
            (d/table {:className "table table-hover table-striped test-data"}
                     (d/tbody {}
-                             (map #(CE memoed-row
-                                       (cond-> (assoc % :dispatch dispatch)
-                                         (= (:id %) (:selected app-db)) (assoc :selected? true))
-                                       :key (:id %))
-                                  (:data app-db))))
+                      (map #(CE memoed-row
+                              (cond-> {:item %
+                                       :dispatch dispatch}
+                                (= (:id %) (:selected app-db)) (assoc :selected? true))
+                              :key (:id %))
+                        (:data app-db))))
            (d/span {:className "preloadicon glyphicon glyphicon-remove"
                     :aria-hidden "true"}))))
