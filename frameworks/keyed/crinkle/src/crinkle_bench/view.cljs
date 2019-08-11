@@ -5,9 +5,17 @@
    [crinkle.component :refer [CE] :as c]
    [crinkle.dom :as d]))
 
+(defn useSelect! [selected-atom setselected id]
+  (fn []
+    (when-some [set-previously-selected @selected-atom]
+      (set-previously-selected false))
+    (do (reset! selected-atom setselected)
+        (setselected true))))
+
 (defn row
-  [{:keys [dispatch selected?] {:keys [id label]} :item}]
-  (let [select-cb (react/useCallback #(dispatch {:action :select :args {:id id}})
+  [{:keys [dispatch selected-atom] {:keys [id label]} :item}]
+  (let [[selected? setselected] (react/useState false)
+        select-cb (react/useCallback (useSelect! selected-atom setselected id)
                                      #js[])
         remove-cb (react/useCallback #(dispatch {:action :remove :args {:id id}})
                                      #js[])]
@@ -64,15 +72,15 @@
 
 (defn app
   []
-  (let [[app-db dispatch] (react/useReducer u/reducer u/initial-state)]
+  (let [[app-db dispatch] (react/useReducer u/reducer u/initial-state)
+        item-context  {:dispatch dispatch
+                       :selected-atom (:selected-atom app-db)}]
     (d/div {:className "container"}
            (CE memoed-jumbotron {:dispatch dispatch})
            (d/table {:className "table table-hover table-striped test-data"}
                     (d/tbody {}
                       (map #(CE memoed-row
-                              (cond-> {:item %
-                                       :dispatch dispatch}
-                                (= (:id %) (:selected app-db)) (assoc :selected? true))
+                              (assoc item-context :item %)
                               :key (:id %))
                         (:data app-db))))
            (d/span {:className "preloadicon glyphicon glyphicon-remove"

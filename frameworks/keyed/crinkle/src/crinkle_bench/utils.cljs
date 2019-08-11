@@ -9,7 +9,7 @@
 (def next-id (atom 0))
 
 (def initial-state
-  {:selected nil
+  {:selected-atom (atom nil)
    :data []})
 
 (defn build-label
@@ -32,8 +32,7 @@
 (defn run
   [state]
   (assoc state
-         :data (build-data 1000)
-         :selected nil))
+         :data (build-data 1000)))
 
 (defn add
   [state]
@@ -51,32 +50,27 @@
 (defn swap-rows
   [{:keys [data] :as state}]
   (assoc state :data (if (> (count data) 998)
-                       (-> data
-                           (assoc 1 (get data 998))
-                           (assoc 998 (get data 1)))
+                       (let [tdata (transient data)]
+                         (-> tdata
+                           (assoc! 1 (get data 998))
+                           (assoc! 998 (get data 1))
+                           persistent!))
                        data)))
 
 (defn delete-row
   [{:keys [data] :as state} {:keys [id]}]
   (assoc state
-         :data (into [] (remove #(identical? id (:id %)) data))
-         :selected nil))
+         :data (into [] (remove #(identical? id (:id %)) data))))
 
 (defn run-lots
   [state]
   (assoc state
-         :data (build-data 10000)
-         :selected nil))
-
-(defn select
-  [state {:keys [id]}]
-  (assoc state :selected id))
+         :data (build-data 10000)))
 
 (defn clear
   [state]
   (assoc state
-         :data []
-         :selected nil))
+         :data []))
 
 (defn reducer [state {:keys [action args] :as arg}]
   (case action
@@ -86,5 +80,4 @@
     :update (update-some state)
     :clear (clear state)
     :swap-rows (swap-rows state)
-    :select (select state args)
     :remove (delete-row state args)))
