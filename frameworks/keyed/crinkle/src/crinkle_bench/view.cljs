@@ -5,6 +5,8 @@
    [crinkle.component :refer [CE RE use= fragment] :as c]
    [crinkle.dom :as d]))
 
+(def effect-ctx ^js (react/createContext {}))
+
 (defn useSelect! [selected-atom setselected id]
   (fn []
     (when-some [set-previously-selected @selected-atom]
@@ -13,8 +15,9 @@
         (setselected true))))
 
 (defn row
-  [{:keys [dispatch selected-atom] {:keys [id label]} :item}]
-  (let [[selected? setselected] (react/useState false)
+  [{:keys [id label]}]
+  (let [{:keys [dispatch selected-atom] } (react/useContext effect-ctx)
+        [selected? setselected] (react/useState false)
         select-cb (react/useCallback (useSelect! selected-atom setselected id)
                                      #js[])
         remove-cb (react/useCallback #(dispatch {:action :remove :args {:id id}})
@@ -73,7 +76,7 @@
 (defn listchunk [items]
   (fragment
     (into []
-      (map #(CE memoed-row % :key (:id (:item %))))
+      (map #(CE memoed-row % :key (:id %)))
       items)))
 
 (def memoed-listchunk (react/memo listchunk =))
@@ -81,17 +84,18 @@
 (defn app
   []
   (let [[app-db dispatch] (react/useReducer u/reducer u/initial-state)
-        item-context  {:dispatch dispatch
-                       :selected-atom (:selected-atom app-db)}]
-    (d/div {:className "container"}
+        item-context (use= {:dispatch      dispatch
+                            :selected-atom (:selected-atom app-db)})]
+    (RE (.-Provider effect-ctx)
+      {:value item-context}
+      (d/div {:className "container"}
            (CE memoed-jumbotron {:dispatch dispatch})
            (d/table {:className "table table-hover table-striped test-data"}
                     (d/tbody {}
                       (into []
                         (comp
-                          (map #(assoc item-context :item %))
                           (partition-all 32)
                           (map #(CE memoed-listchunk %)))
                         (:data app-db))))
-           (d/span {:className "preloadicon glyphicon glyphicon-remove"
-                    :aria-hidden "true"}))))
+           (d/span {:className   "preloadicon glyphicon glyphicon-remove"
+                    :aria-hidden "true"})))))
