@@ -2,7 +2,7 @@
   (:require
    ["react" :as react]
    [crinkle-bench.utils :as u]
-   [crinkle.component :refer [CE] :as c]
+   [crinkle.component :refer [CE RE use= fragment] :as c]
    [crinkle.dom :as d]))
 
 (defn useSelect! [selected-atom setselected id]
@@ -70,6 +70,14 @@
 
 (def memoed-jumbotron (react/memo jumbotron =))
 
+(defn listchunk [items]
+  (fragment
+    (into []
+      (map #(CE memoed-row % :key (:id (:item %))))
+      items)))
+
+(def memoed-listchunk (react/memo listchunk =))
+
 (defn app
   []
   (let [[app-db dispatch] (react/useReducer u/reducer u/initial-state)
@@ -79,9 +87,11 @@
            (CE memoed-jumbotron {:dispatch dispatch})
            (d/table {:className "table table-hover table-striped test-data"}
                     (d/tbody {}
-                      (map #(CE memoed-row
-                              (assoc item-context :item %)
-                              :key (:id %))
+                      (into []
+                        (comp
+                          (map #(assoc item-context :item %))
+                          (partition-all 32)
+                          (map #(CE memoed-listchunk %)))
                         (:data app-db))))
            (d/span {:className "preloadicon glyphicon glyphicon-remove"
                     :aria-hidden "true"}))))
